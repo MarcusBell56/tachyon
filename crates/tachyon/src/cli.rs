@@ -24,7 +24,7 @@ Options:
       --quit           Ask the running instance to quit (unsaved documents are
                        kept and reopen at the next start)
       --about          Show the About window
-      --note           Open a new sticky note
+      --note           Open as sticky note (opens blank note or specified FILEs)
       --desktop-entry <on|off>
                        Add Tachyon to the application launcher and \"Open with\"
                        menus, or remove it (Linux)
