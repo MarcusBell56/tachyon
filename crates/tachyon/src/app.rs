@@ -451,11 +451,7 @@ pub fn run(cli: Cli, listener: Option<Listener>, mut startup: Startup) {
         // windowless until the first launch arrives, which brings the restored documents along.
         let about = cli.about;
         let note = cli.note;
-        let note_files = if cli.note {
-            cli.files.clone()
-        } else {
-            Vec::new()
-        };
+        let note_files = if cli.note { cli.files.clone() } else { Vec::new() };
         let windowless_background = resident && cli.background && cli.opens_nothing();
         let mut openings: Vec<Opening> = if windowless_background {
             cx.set_global(PendingRestore(session_openings));
@@ -1156,16 +1152,15 @@ fn open_note_window(source: NoteSource, cx: &mut App) -> Option<WindowHandle<Edi
     let settings = cx.try_global::<tachyon_editor::Settings>().cloned().unwrap_or_default();
     // A new note is always the user's request (hotkey, `--note`, tray, palette), so it comes to
     // the front; restored notes open where they were without taking focus from anything.
-    let activate = matches!(source, NoteSource::New | NoteSource::Open { .. } | NoteSource::Reopen { .. });
+    let activate =
+        matches!(source, NoteSource::New | NoteSource::Open { .. } | NoteSource::Reopen { .. });
     // New notes start in `sticky_default_mode`; a restored one in the mode recorded for it; a
     // reopened one is a file picked from the list, with no record, so Markdown as it always was.
     let (bounds, pinned, path, plain, locked) = match source {
         NoteSource::New => {
             (initial_note_bounds(cx), settings.sticky_on_top, None, settings.sticky_plain, false)
         }
-        NoteSource::Open { path } => {
-            (initial_note_bounds(cx), false, Some(path), false, true)
-        }
+        NoteSource::Open { path } => (initial_note_bounds(cx), false, Some(path), false, true),
         NoteSource::Reopen { path } => {
             (initial_note_bounds(cx), settings.sticky_on_top, Some(path), false, false)
         }
